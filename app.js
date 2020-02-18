@@ -9,14 +9,14 @@ const ui = new UI();
 const searchUser = document.getElementById('searchUser');
 
 //Search input event listener
-searchUser.addEventListener('keyup', (e) => {
+searchUser.addEventListener('keyup',  async (e) => {
   //Get input text
   const userText = e.target.value;
 
   if(userText !== '') {
     //make HTTP call 
-    github.getUser(userText)
-    .then(data => {
+    const data = await github.getUser(userText);
+    console.log(data);
       if(data.profile.message === 'Not Found') {
         //Show an alert that says users not found
         ui.showAlert('User not found', 'alert alert-danger');
@@ -27,11 +27,8 @@ searchUser.addEventListener('keyup', (e) => {
         ui.showProfile(data.profile);
         //Show Repos
         ui.showRepos(data.repos);
-      }
-      
-    });
-  } else {
-    ui.clearProfile();
-    
-  }
-})
+      } 
+    } else {
+      ui.clearProfile();
+    };
+});
